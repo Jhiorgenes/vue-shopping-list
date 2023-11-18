@@ -4,7 +4,7 @@
     <h1 class="text-gray-100 text-heading1 font-bold">Lista de compras</h1>
     <form
       class="flex flex-col sm:flex-row sm:items-end w-full gap-3"
-      @submit.prevent="submit"
+      @submit.prevent="createProduct"
     >
       <label
         for="item"
@@ -91,7 +91,7 @@
   <main class="mx-auto max-w-3xl mt-10 flex flex-col gap-2 px-4">
     <div
       v-for="product in products"
-      :key="item.id"
+      :key="product.id"
       class="bg-gray-400 p-4 rounded-md flex justify-between items-center border border-gray-300"
     >
       <div class="flex items-center gap-4">
@@ -99,13 +99,14 @@
           type="checkbox"
           class="checkbox rounded-sm checkbox-primary"
           v-model="product.done"
+          @click="updateProduct(product.id, !product.done)"
         />
         <div class="flex flex-col gap-0.5">
           <strong class="text-gray-100 font-bold text-heading2">{{
             product.title
           }}</strong>
           <p class="text-gray-200 text-body">
-            {{ product.unidades }}
+            {{ product.quantidade }}
             <template v-if="product.metric === 'L'"> Litros </template>
             <template v-else-if="product.metric === 'Un.'"> Unidades </template>
             <template v-else-if="product.metric === 'Kg'"> Kilos </template>
@@ -140,7 +141,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 const item = ref('')
 const quantidade = ref(1)
 const metric = ref('Un.')
@@ -150,6 +151,7 @@ import milkIcon from './assets/icons/milk.svg'
 import carrotIcon from './assets/icons/carrot.svg'
 import beefIcon from './assets/icons/beef.svg'
 import sandwichIcon from './assets/icons/sandwich.svg'
+import { http } from './api/axios'
 
 const backgroundTagColor = ref({
   Fruta: 'bg-orange-dark',
@@ -185,49 +187,42 @@ const setIconTag = category => {
   return iconTag.value[category] || ''
 }
 
-const products = reactive([
-  {
-    id: 1,
-    title: 'Leite',
-    unidades: 2,
-    done: false,
-    categoria: 'Bebida',
-    metric: 'Un.',
-  },
-  {
-    id: 2,
-    title: 'Maça',
-    unidades: 4,
-    done: false,
-    categoria: 'Fruta',
-    metric: 'Un.',
-  },
-])
+const products = reactive([])
 
-function submit() {
+async function fetchProducts() {
+  const { data } = await http.get('/products')
+  products.splice(0, products.length, ...data)
+}
+
+async function createProduct() {
   if (item.value === '' || categoria.value === '') {
     console.log('Insira um item e selecione a categoria')
     return
   }
-  const newItem = {
-    id: products.length + 1,
+  const { data } = await http.post('/products', {
     title: item.value,
-    unidades: quantidade.value,
-    categoria: categoria.value,
+    quantidade: quantidade.value,
     metric: metric.value,
-  }
-  products.push(newItem)
+    categoria: categoria.value,
+  })
   item.value = ''
   quantidade.value = 1
   metric.value = 'Un.'
   categoria.value = ''
+  fetchProducts()
 }
 
-function deleteProduct(id) {
-  const product = products.findIndex(product => product.id === id)
-
-  if (product !== -1) {
-    products.splice(product, 1)
-  }
+async function deleteProduct(id) {
+  const { data } = await http.delete(`/products/${id}`)
+  fetchProducts()
 }
+async function updateProduct(id, done) {
+  const { data } = await http.put(`/products/${id}`, {
+    done,
+  })
+}
+
+onMounted(() => {
+  fetchProducts()
+})
 </script>
