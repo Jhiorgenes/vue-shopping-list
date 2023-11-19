@@ -1,7 +1,24 @@
-# Vue 3 + Vite
+<p align="center">
+  <a href="#-Technologies">
+Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-Project">Project</a>
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<br>
 
-## Recommended IDE Setup
+## 🚀 Technologies
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+This project was developed with the following technologies:
+
+- Vue 3 (Composition API)
+- TailwindCSS
+- DaisyUI
+
+## 🔖 Layout
+
+The design was made by Rocketseat and you can see here:
+
+- [Figma](https://www.figma.com/community/file/1276169043084346929/lista-de-compras-desafio-34)
+
+## 💻 Project
+
+![Todo List](screenshot.png)
