@@ -1,6 +1,6 @@
 <template>
   <div class="h-[185px] bg-gray-500">
-    <img class="h-full bg-cover" src="./assets/cover.png" alt="" />
+    <img class="h-full bg-cover w-full" src="./assets/cover.png" alt="" />
   </div>
   <header class="mx-auto max-w-3xl -mt-24 flex flex-col gap-8 px-4">
     <h1 class="text-gray-100 text-heading1 font-bold">Lista de compras</h1>
