@@ -1,5 +1,7 @@
 <template>
-  <div class="h-[185px] bg-gray-500"></div>
+  <div class="h-[185px] bg-gray-500">
+    <img class="h-full bg-cover" src="./assets/cover.png" alt="" />
+  </div>
   <header class="mx-auto max-w-3xl -mt-24 flex flex-col gap-8 px-4">
     <h1 class="text-gray-100 text-heading1 font-bold">Lista de compras</h1>
     <form
@@ -92,19 +94,32 @@
     <div
       v-for="product in products"
       :key="product.id"
-      class="bg-gray-400 p-4 rounded-md flex justify-between items-center border border-gray-300"
+      :class="[
+        product.done ? 'bg-gray-500 border-gray-400 opacity-80' : '',
+        'bg-gray-400 p-4 rounded-md flex justify-between items-center border border-gray-300 transition-all',
+      ]"
     >
       <div class="flex items-center gap-4">
         <input
           type="checkbox"
-          class="checkbox rounded-sm checkbox-primary"
+          :class="[
+            product.done
+              ? 'checkbox-success opacity-70 hover:opacity-95'
+              : 'checkbox-primary hover:bg-purple-dark',
+
+            'checkbox rounded-sm  border-2 transition-all',
+          ]"
           v-model="product.done"
           @click="updateProduct(product.id, !product.done)"
         />
         <div class="flex flex-col gap-0.5">
-          <strong class="text-gray-100 font-bold text-heading2">{{
-            product.title
-          }}</strong>
+          <strong
+            :class="[
+              product.done ? 'line-through font-normal' : '',
+              'text-gray-100 font-bold text-heading2',
+            ]"
+            >{{ product.title }}</strong
+          >
           <p class="text-gray-200 text-body">
             {{ product.quantidade }}
             <template v-if="product.metric === 'L'"> Litros </template>
